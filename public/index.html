@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Pro | Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --primary: #6366f1; 
+            --accent: #a5b4fc;
+            --bg: #f8fafc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            height: 100vh;
+            display: flex;
+            background-color: var(--bg);
+            overflow: hidden;
+        }
+
+        /* The Decorative Left Side */
+        .left-side {
+            flex: 1.2;
+            background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            color: white;
+            /* Curved shape on the right edge */
+            border-radius: 0 50px 50px 0;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+            z-index: 2;
+        }
+
+        .floating-blob {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            top: 10%;
+            left: 10%;
+            animation: move 10s infinite alternate;
+        }
+
+        .inventory-img {
+            width: 75%;
+            max-width: 450px;
+            z-index: 3;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.2));
+            transition: transform 0.5s ease;
+        }
+
+        .inventory-img:hover { transform: translateY(-10px); }
+
+        /* The Elegant Right Side */
+        .right-side {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg);
+            padding: 40px;
+        }
+
+        .form-card {
+            width: 100%;
+            max-width: 380px;
+            padding: 20px;
+        }
+
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 10px;
+            letter-spacing: -1.5px;
+        }
+
+        .input-wrapper {
+            margin-top: 25px;
+            position: relative;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 16px 20px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .input-wrapper input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            margin-top: 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.4);
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .register-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        @keyframes move {
+            from { border-radius: 40% 60% 70% 30%; }
+            to { border-radius: 60% 40% 30% 70%; transform: translate(50px, 50px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="left-side">
+        <div class="floating-blob"></div>
+        <img src="login.png" alt="Inventory Illustration" class="inventory-img">
+        <h2 style="margin-top: 20px; font-weight: 300;">Smart Solutions for</h2>
+        <h1 style="font-weight: 800; font-size: 2.5rem;">Inventory Control</h1>
+    </div>
+
+    <div class="right-side">
+        <div class="form-card">
+            <h1 class="logo-text">Sign In</h1>
+            <p style="color: #64748b;">Welcome back chief 🫡 Please enter your details.</p>
+
+            <div class="input-wrapper">
+                <input type="email" id="email" placeholder="Email Address">
+            </div>
+            <div class="input-wrapper">
+                <input type="password" id="password" placeholder="Password">
+            </div>
+
+            <button class="login-btn" onclick="handleLogin()">Sign In to Dashboard</button>
+
+            <div class="register-link">
+                Don't have an account? <a href="register.html">Create free account</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function handleLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    window.location.href = "home.html";
+                } else {
+                    alert("Invalid email or password");
+                }
+            } catch (err) { console.log("Connection error"); }
+        }
+    </script>
+</body>
+</html>
